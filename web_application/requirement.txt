@@ -2,3 +2,5 @@ awesome-streamlit
 streamlit
 pandas
 numpy
+gdown
+altair
