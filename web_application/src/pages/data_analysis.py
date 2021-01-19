@@ -125,9 +125,6 @@ def _sort_and_take(df, sort_col="DATE", days_to_take=365):
     return df.sort_values(sort_col)[:days_to_take]
 
 
-def _display_sales_customer_series():
-
-
 def write():
     """Used to write the page in the app.py file"""
     with st.spinner("Loading Home ..."):
