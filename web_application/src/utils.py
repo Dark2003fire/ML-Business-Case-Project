@@ -164,7 +164,7 @@ def _streamlit_theme():
     return config
 
 
-DATA_PATH = "data/"
+DATA_PATH = "../data/"
 
 
 @st.cache
