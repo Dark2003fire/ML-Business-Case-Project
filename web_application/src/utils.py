@@ -21,6 +21,14 @@ def _make_scatter_chart(df, x="", y="", title="", height=400, **encode_args):
     return chart
 
 
+def _make_bar_chart(df, x="", y="", title="", height=400, **encode_args):
+    chart = alt.Chart(df, title=title)\
+        .mark_bar().encode(x=x, y=y, **encode_args)\
+        .properties(height=height)\
+        .interactive()
+    return chart
+
+
 def _set_graphical_settings():
     # Graphical settings
     CB91_Blue = '#2CBDFE'
