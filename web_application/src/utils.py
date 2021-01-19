@@ -3,6 +3,7 @@ import streamlit as st
 import altair as alt
 import pandas as pd
 import gdown
+from pathlib import Path
 
 
 def _make_line_chart(df, x="", y="", title="", height=400, **encode_args):
@@ -172,6 +173,7 @@ def _load_variables(
     url="https://drive.google.com/uc?id=10p7JyO2DNkWbMRZoMNVPmipy1msZpBEV"
 ):
     path = DATA_PATH + "variables.txt"
+    Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
     gdown.download(url, path)
     return open(path, "r").read()
 
@@ -181,6 +183,7 @@ def _load_train_data(
     url="https://drive.google.com/uc?id=1kx5sSTcRj4aVS8KZgSCcdo9-5i1axh5n"
 ):
     path = DATA_PATH + "train.csv"
+    Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
     gdown.download(url, path)
     return pd.read_csv(path, low_memory=False)
 
@@ -190,6 +193,7 @@ def _load_test_data(
     url="https://drive.google.com/uc?id=17ur-ILBNAZDgjpqgPU1XBLYSIXc5cn5d"
 ):
     path = DATA_PATH + "test.csv"
+    Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
     gdown.download(url, path)
     return pd.read_csv(path)
 
@@ -199,6 +203,7 @@ def _load_store_data(
     url="https://drive.google.com/uc?id=1IHr_vKHZ0P0lUIAksJ9joRLUoUtZdDSY"
 ):
     path = DATA_PATH + "store.csv"
+    Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
     gdown.download(url, path)
     return pd.read_csv(path)
 
