@@ -1,2 +1,3 @@
 __pycache__
-**/data
+web_application/data/*
+!web_application/data/.gitkeep
