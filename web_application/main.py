@@ -4,13 +4,11 @@ import streamlit as st
 import altair as alt
 import src.pages.data_analysis
 import src.pages.modeling
-import src.pages.insights
 from src.utils import _override_color_styles, _streamlit_theme
 
 PAGES = {
     "Statistical Analysis on Sales": src.pages.data_analysis,
-    "Modeling Strategy": src.pages.modeling,
-    "Insights on Forecasts": src.pages.insights,
+    "Sales Forecast and Insights": src.pages.modeling,
 }
 
 

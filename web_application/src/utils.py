@@ -6,6 +6,8 @@ from pathlib import Path
 import pandas as pd
 import requests
 from io import StringIO
+from joblib import load
+import base64
 
 
 def _make_line_chart(df, x="", y="", title="", height=400, **encode_args):
@@ -167,12 +169,27 @@ def _streamlit_theme():
     return config
 
 
+def _get_table_download_link(df, store_id):
+    """Generates a link allowing the data in a given panda dataframe to be downloaded"""
+    csv = df.to_csv(index=False)
+    # some strings <-> bytes conversions necessary here
+    b64 = base64.b64encode(csv.encode()).decode()
+    return f'<a href="data:file/csv;base64,{b64}">Download sales forecast of store {store_id} as CSV...</a>'
+
+
 @st.cache
 def _load_variables(
     file_id="10p7JyO2DNkWbMRZoMNVPmipy1msZpBEV"
 ):
     dwn_url = f"https://drive.google.com/uc?export=download&id={file_id}"
     return requests.get(dwn_url).text
+
+
+@st.cache
+def _load_model():
+    dwn_url = "https://download1589.mediafire.com/kjatmmb086rg/z31p8bpk9h75zcr/finalized_model.sav"
+    joblib_model = requests.get(dwn_url).text
+    return load(joblib_model)
 
 
 @st.cache
