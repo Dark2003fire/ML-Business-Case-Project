@@ -22,6 +22,8 @@ def init():
 def main():
     """Main function of the App"""
     init()
+    st.sidebar.image('./assets/logo_wavestone.png',
+                     use_column_width=True)
     st.sidebar.title("Navigation Panel")
     selection = st.sidebar.radio("Go to", list(PAGES.keys()))
 
@@ -29,6 +31,7 @@ def main():
 
     with st.spinner(f"Loading {selection} ..."):
         page.write()
+
     st.sidebar.title("Context")
     st.sidebar.info(
         """This an open source project for the Machine Learning Business Case course 
