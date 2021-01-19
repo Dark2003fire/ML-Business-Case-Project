@@ -2,8 +2,10 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import altair as alt
 import pandas as pd
-import gdown
 from pathlib import Path
+import pandas as pd
+import requests
+from io import StringIO
 
 
 def _make_line_chart(df, x="", y="", title="", height=400, **encode_args):
@@ -165,47 +167,38 @@ def _streamlit_theme():
     return config
 
 
-DATA_PATH = "../data/"
-
-
 @st.cache
 def _load_variables(
-    url="https://drive.google.com/uc?id=10p7JyO2DNkWbMRZoMNVPmipy1msZpBEV"
+    file_id="10p7JyO2DNkWbMRZoMNVPmipy1msZpBEV"
 ):
-    path = DATA_PATH + "variables.txt"
-    Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
-    gdown.download(url, path)
-    return open(path, "r").read()
+    dwn_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    return requests.get(dwn_url).text
 
 
 @st.cache
+def _load_dataframe(file_id, **read_kwargs):
+    dwn_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    text = requests.get(dwn_url).text
+    csv_raw = StringIO(text)
+    return pd.read_csv(csv_raw, **read_kwargs)
+
+
 def _load_train_data(
-    url="https://drive.google.com/uc?id=1kx5sSTcRj4aVS8KZgSCcdo9-5i1axh5n"
+    file_id="1kx5sSTcRj4aVS8KZgSCcdo9-5i1axh5n"
 ):
-    path = DATA_PATH + "train.csv"
-    Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
-    gdown.download(url, path)
-    return pd.read_csv(path, low_memory=False)
+    return _load_dataframe(file_id, low_memory=False)
 
 
-@st.cache
 def _load_test_data(
-    url="https://drive.google.com/uc?id=17ur-ILBNAZDgjpqgPU1XBLYSIXc5cn5d"
+    file_id="17ur-ILBNAZDgjpqgPU1XBLYSIXc5cn5d"
 ):
-    path = DATA_PATH + "test.csv"
-    Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
-    gdown.download(url, path)
-    return pd.read_csv(path)
+    return _load_dataframe(file_id)
 
 
-@st.cache
 def _load_store_data(
-    url="https://drive.google.com/uc?id=1IHr_vKHZ0P0lUIAksJ9joRLUoUtZdDSY"
+    file_id="1IHr_vKHZ0P0lUIAksJ9joRLUoUtZdDSY",
 ):
-    path = DATA_PATH + "store.csv"
-    Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
-    gdown.download(url, path)
-    return pd.read_csv(path)
+    return _load_dataframe(file_id)
 
 
 def _display_dataframe_quickly(df, min_rows=5, max_rows=1000, **st_dataframe_kwargs):
