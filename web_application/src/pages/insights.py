@@ -1,7 +1,6 @@
 """Home page shown when the user enters the application"""
 import streamlit as st
 
-import awesome_streamlit as ast
 import numpy as np
 import pandas as pd
 
