@@ -1,5 +1,5 @@
 streamlit==0.74.1
-awesome_streamlit==20200728.1
+awesome_streamlit
 pandas==1.1.4
 scipy==1.4.1
 altair==4.1.0
