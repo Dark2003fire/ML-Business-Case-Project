@@ -49,17 +49,17 @@ def _get_forecast_of_shops(ID_shops, y_train, y_test, forecasts):
         test2.sort_index(ascending=True, inplace=True)
         data = pd.concat([test2, data])
         data.reset_index(inplace=True)
-        data.rename(columns={"Pred": "Forecast of Sales"}, inplace=True,)
+        data.rename(columns={"Pred": "Sales Forecast"}, inplace=True,)
         data_plot = data.melt(
             id_vars=["Date"],
-            value_vars=["Past Sales", "Forecast of Sales"]
+            value_vars=["Past Sales", "Sales Forecast"]
         )
 
         sales_chart = _make_line_chart(
             data_plot,
             x='Date',
             y='value',
-            title=f"Forecast of sales for store n°{ID_shop}",
+            title=f"Sales Forecast for store n°{ID_shop}",
             color=alt.Color(
                 'variable',
                 legend=alt.Legend(title="Sales value types"),
