@@ -5,7 +5,7 @@ import pandas as pd
 from pathlib import Path
 import pandas as pd
 import requests
-from io import StringIO
+from io import StringIO, BytesIO
 from joblib import load
 import base64
 
@@ -185,11 +185,22 @@ def _load_variables(
     return requests.get(dwn_url).text
 
 
+@st.cache(allow_output_mutation=True)
+def _load_model(
+    dwn_url="https://download939.mediafire.com/4frvezmdfoag/pos5bl0quodgww9/finalized_model_compressed"
+):
+    response = requests.get(dwn_url)
+    content = response.content
+    return load(BytesIO(content))
+
+
 @st.cache
-def _load_model():
-    dwn_url = "https://download1589.mediafire.com/kjatmmb086rg/z31p8bpk9h75zcr/finalized_model.sav"
-    joblib_model = requests.get(dwn_url).text
-    return load(joblib_model)
+def _load_forecast_model(
+    dwn_url="https://download1481.mediafire.com/jl167ywc1kpg/qj9j7lk7uncxuch/finalized_model_compressed_2"
+):
+    response = requests.get(dwn_url)
+    content = response.content
+    return load(BytesIO(content))
 
 
 @st.cache
@@ -200,16 +211,32 @@ def _load_dataframe(file_id, **read_kwargs):
     return pd.read_csv(csv_raw, **read_kwargs)
 
 
-def _load_train_data(
-    file_id="1kx5sSTcRj4aVS8KZgSCcdo9-5i1axh5n"
+def _load_train_data_analysis(
+    file_id="1kx5sSTcRj4aVS8KZgSCcdo9-5i1axh5n",
+    **read_kwargs,
 ):
-    return _load_dataframe(file_id, low_memory=False)
+    return _load_dataframe(file_id, **read_kwargs)
+
+
+def _load_test_data_analysis(
+    file_id="17ur-ILBNAZDgjpqgPU1XBLYSIXc5cn5d",
+    **read_kwargs,
+):
+    return _load_dataframe(file_id, **read_kwargs)
+
+
+def _load_train_data(
+    file_id="1IBTlAoYKpX64r8sVDNs9yfF3FGWFxu2k",
+    **read_kwargs,
+):
+    return _load_dataframe(file_id, **read_kwargs)
 
 
 def _load_test_data(
-    file_id="17ur-ILBNAZDgjpqgPU1XBLYSIXc5cn5d"
+    file_id="1b05eSnGQxrfFLywxBF37z00H1PIWOIMU",
+    **read_kwargs,
 ):
-    return _load_dataframe(file_id)
+    return _load_dataframe(file_id, **read_kwargs)
 
 
 def _load_store_data(

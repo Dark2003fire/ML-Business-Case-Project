@@ -5,7 +5,7 @@ import altair as alt
 from src.utils import (
     _load_variables,
     _load_store_data,
-    _load_train_data,
+    _load_train_data_analysis,
     _display_dataframe_quickly,
     _make_line_chart,
     _make_scatter_chart,
@@ -120,7 +120,7 @@ def write():
         st.write("## Here is the store metadata")
         st.dataframe(store_data)
 
-        train_data = _load_train_data()
+        train_data = _load_train_data_analysis()
         st.write("## Here is the train data for the different stores")
         _display_dataframe_quickly(train_data)
 
