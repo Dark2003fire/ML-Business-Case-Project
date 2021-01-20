@@ -29,10 +29,10 @@ TITLE = "Forecasting the Sales and Insights"
 def _get_forecast_of_shops(ID_shops, y_train, y_test, forecasts):
     charts, dfs = [], []
     for ID_shop in ID_shops:
-        data_init = y_train[y_train['Store'] == ID_shop][:50].copy()
+        data_init = y_train[y_train['Store'] == ID_shop][:50]
         data_init.rename(columns={"Sales": 'Past Sales'}, inplace=True)
-        data_init2 = y_test[y_test['Store'] == ID_shop].copy()
-        data = forecasts[forecasts['Store'] == ID_shop].copy()
+        data_init2 = y_test[y_test['Store'] == ID_shop]
+        data = forecasts[forecasts['Store'] == ID_shop]
         dfs.append((ID_shop, data))
         test2 = pd.concat([data_init['Past Sales'], data_init2['Sales']]).reset_index(
             name='Past Sales')
@@ -72,9 +72,9 @@ def _get_forecast_of_shops(ID_shops, y_train, y_test, forecasts):
 def _evaluate_forecast_of_shops(ID_shops, test, y_test):
     charts = []
     for ID_shop in ID_shops:
-        data_init = test[test['Store'] == ID_shop][:50].copy()
+        data_init = test[test['Store'] == ID_shop][:50]
         data_init.rename(columns={"Sales": 'Past Sales'}, inplace=True)
-        data = y_test[y_test['Store'] == ID_shop].copy()
+        data = y_test[y_test['Store'] == ID_shop]
         link = pd.DataFrame({
             'Date': pd.to_datetime("2015-06-20"),
             'Store': ID_shop,
@@ -268,7 +268,7 @@ def write():
             st.write("# What is important for your sales...")
             st.text("\n")
             perm_importance = _get_permutation_importance(
-                model, X_test_encoded, y_test['Sales']
+                model_forecast, X_test_encoded, y_test['Sales']
             )
             sorted_idx = perm_importance.importances_mean.argsort()
             bar_df = pd.DataFrame({
