@@ -36,32 +36,6 @@ def _make_bar_chart(df, x="", y="", title="", height=400, **encode_args):
     return chart
 
 
-def _set_graphical_settings():
-    # Graphical settings
-    CB91_Blue = '#2CBDFE'
-    CB91_Green = '#47DBCD'
-    CB91_Pink = '#F3A0F2'
-    CB91_Purple = '#9D2EC5'
-    CB91_Violet = '#661D98'
-    CB91_Amber = '#F5B14C'
-    color_list = [CB91_Blue, CB91_Pink, CB91_Amber, CB91_Purple, CB91_Green,
-                  CB91_Violet]
-    params = {"ytick.color": "black",
-              "xtick.color": "black",
-              'axes.labelsize': 15,
-              "axes.labelcolor": "black",
-              "axes.edgecolor": "black",
-              "axes.titlecolor": "black",
-              'figure.figsize': [20, 8],
-              'axes.prop_cycle': plt.cycler(color=color_list),
-              'figure.dpi': 75,
-              'legend.fontsize': 10,
-              'font.size': 15
-              }
-    plt.rcParams.update(params)
-    return color_list
-
-
 def _streamlit_theme():
     font = "IBM Plex Mono"
     primary_color = "#F63366"
