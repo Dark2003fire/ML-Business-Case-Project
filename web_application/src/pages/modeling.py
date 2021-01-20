@@ -197,10 +197,10 @@ def write():
         y_train = y_train.reset_index(drop=True)
         y_test = y_test.reset_index(drop=True)
 
-        X_train_encoded = _one_hot_encoding(X_train)
-        X_train_encoded = _label_encoding(X_train_encoded)
-        X_test_encoded = _one_hot_encoding(X_test)
-        X_test_encoded = _label_encoding(X_test_encoded)
+        X_train_encoded = _one_hot_encoding(X_train).copy()
+        X_train_encoded = _label_encoding(X_train_encoded).copy()
+        X_test_encoded = _one_hot_encoding(X_test).copy()
+        X_test_encoded = _label_encoding(X_test_encoded).copy()
         X_test_forecast_encoded = _one_hot_encoding(
             combined_data_forecast).copy()
         X_test_forecast_encoded = _label_encoding(
