@@ -265,20 +265,20 @@ def write():
                 st.write("## How well is the model performing on ground truth")
                 st.altair_chart(chart, use_container_width=True)
 
-            st.write("# What is important for your sales...")
-            st.text("\n")
-            perm_importance = _get_permutation_importance(
-                model_forecast, X_test_encoded, y_test['Sales']
-            )
-            sorted_idx = perm_importance.importances_mean.argsort()
-            bar_df = pd.DataFrame({
-                "Features": [X_test_encoded.columns[i] for i in sorted_idx],
-                "Permutation Importance": [perm_importance.importances_mean[i] for i in sorted_idx]
-            })
-            perm_bar_chart = _make_bar_chart(
-                bar_df,
-                x="Permutation Importance:Q",
-                y=alt.Y('Features', sort='-x'),
-                title="Most important variables predicting your sales..."
-            )
-            st.altair_chart(perm_bar_chart, use_container_width=True)
+            # st.write("# What is important for your sales...")
+            # st.text("\n")
+            # perm_importance = _get_permutation_importance(
+            #     model_forecast, X_test_encoded, y_test['Sales']
+            # )
+            # sorted_idx = perm_importance.importances_mean.argsort()
+            # bar_df = pd.DataFrame({
+            #     "Features": [X_test_encoded.columns[i] for i in sorted_idx],
+            #     "Permutation Importance": [perm_importance.importances_mean[i] for i in sorted_idx]
+            # })
+            # perm_bar_chart = _make_bar_chart(
+            #     bar_df,
+            #     x="Permutation Importance:Q",
+            #     y=alt.Y('Features', sort='-x'),
+            #     title="Most important variables predicting your sales..."
+            # )
+            # st.altair_chart(perm_bar_chart, use_container_width=True)
