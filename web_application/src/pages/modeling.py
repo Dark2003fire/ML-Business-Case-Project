@@ -248,9 +248,9 @@ def write():
         test_action = st.button('Forecast the next 6 weeks')
         if test_action:
             charts = _evaluate_forecast_of_shops(store_choices, test, y_test)
-            # charts_forecast, dfs_forecast = _get_forecast_of_shops(
-            #     store_choices, y_train, y_test, y_test_forecast
-            # )
+            charts_forecast, dfs_forecast = _get_forecast_of_shops(
+                store_choices, y_train, y_test, y_test_forecast
+            )
             for (chart, chart_forecast), (id_shop, df) in zip(
                 zip(charts, charts_forecast), dfs_forecast
             ):
