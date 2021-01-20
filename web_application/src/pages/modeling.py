@@ -64,7 +64,8 @@ def _get_forecast_of_shops(ID_shops, y_train, y_test, forecasts):
                 'variable',
                 legend=alt.Legend(title="Sales value types"),
                 scale=alt.Scale(scheme='set1')
-            )
+            ),
+            strokeDash='variable',
         )
         charts.append(sales_chart)
     return charts, dfs
@@ -133,14 +134,14 @@ def _get_model_predictions(
     return None, y_test
 
 
-@ st.cache
+@st.cache(allow_output_mutation=True)
 def _label_encoding(X):
     encoder = LabelEncoder()
     X['Assortment'] = encoder.fit_transform(X['Assortment'])
     return X
 
 
-@ st.cache
+@st.cache(allow_output_mutation=True)
 def _one_hot_encoding(X):
     encoder = OneHotEncoder(sparse=False)
     features = ['StoreType', 'StateHoliday']
@@ -151,7 +152,7 @@ def _one_hot_encoding(X):
     return X_encoded
 
 
-@ st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True)
 def _train_model(X_train_encoded, y_train, **model_kwargs):
     model = RandomForestRegressor(**model_kwargs)
     with st.spinner('Training the model...'):
@@ -178,8 +179,8 @@ def write():
             columns=['PromoInterval', 'CD_zscore'], inplace=True)
 
         # X, y separation
-        y = model_data[['Date', 'Store', 'Sales']].copy()
-        X = model_data.drop(columns='Sales').copy()
+        y = model_data[['Date', 'Store', 'Sales']]
+        X = model_data.drop(columns='Sales')
         X['Date'] = pd.to_datetime(X['Date'])
         y['Date'] = pd.to_datetime(y['Date'])
 
@@ -196,14 +197,14 @@ def write():
         y_train = y_train.reset_index(drop=True)
         y_test = y_test.reset_index(drop=True)
 
-        X_train_encoded = _one_hot_encoding(X_train).copy()
-        X_train_encoded = _label_encoding(X_train_encoded).copy()
-        X_test_encoded = _one_hot_encoding(X_test).copy()
-        X_test_encoded = _label_encoding(X_test_encoded).copy()
+        X_train_encoded = _one_hot_encoding(X_train)
+        X_train_encoded = _label_encoding(X_train_encoded)
+        X_test_encoded = _one_hot_encoding(X_test)
+        X_test_encoded = _label_encoding(X_test_encoded)
         X_test_forecast_encoded = _one_hot_encoding(
-            combined_data_forecast).copy()
+            combined_data_forecast)
         X_test_forecast_encoded = _label_encoding(
-            X_test_forecast_encoded).copy()
+            X_test_forecast_encoded)
         X_test_forecast_encoded.fillna(-1, inplace=True)
         forecasts = X_test_forecast_encoded[['Date', 'Store']]
 
