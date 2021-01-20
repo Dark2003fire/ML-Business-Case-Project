@@ -179,8 +179,8 @@ def write():
             columns=['PromoInterval', 'CD_zscore'], inplace=True)
 
         # X, y separation
-        y = model_data[['Date', 'Store', 'Sales']]
-        X = model_data.drop(columns='Sales')
+        y = model_data[['Date', 'Store', 'Sales']].copy()
+        X = model_data.drop(columns='Sales').copy()
         X['Date'] = pd.to_datetime(X['Date'])
         y['Date'] = pd.to_datetime(y['Date'])
 
