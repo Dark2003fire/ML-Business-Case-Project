@@ -198,5 +198,3 @@ def write():
                 title="Most important variables predicting your sales..."
             )
             st.altair_chart(perm_bar_chart, use_container_width=True)
-        # model = _load_model()
-        # _display_model_predictions(model, X_test_encoded, y_train, y_test)

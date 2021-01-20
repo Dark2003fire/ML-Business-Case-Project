@@ -1,9 +1,10 @@
-joblib==0.17.0
-altair==4.1.0
-scipy==1.4.1
-numpy==1.19.5
-matplotlib==3.3.2
 streamlit==0.74.1
-pandas==1.1.4
+joblib==0.17.0
+numpy==1.19.5
 requests==2.22.0
+scipy==1.4.1
+altair==4.1.0
+pandas==1.1.4
+gdown==3.12.2
+matplotlib==3.3.2
 scikit_learn==0.24.1

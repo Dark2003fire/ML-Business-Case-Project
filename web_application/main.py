@@ -16,7 +16,6 @@ def init():
     """Runs init scripts (color theme and changes)"""
     alt.themes.register("streamlit", _streamlit_theme)
     alt.themes.enable("streamlit")
-    # st.write(_override_color_styles(), unsafe_allow_html=True)
 
 
 def main():

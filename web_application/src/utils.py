@@ -9,6 +9,7 @@ from io import StringIO, BytesIO
 from joblib import load
 import base64
 from src.download import download_large_file_from_google_drive
+import gdown
 
 
 def _make_line_chart(df, x="", y="", title="", height=400, **encode_args):
@@ -204,20 +205,34 @@ def _load_image(
 def _load_model(
     file_id="1PyqEsxgEyyLcBOzMd7UhPpFKudRGT2A-"
 ):
-    bytes_obj = download_large_file_from_google_drive(file_id)
-    if bytes_obj:
-        return load(bytes_obj)
-    raise ValueError("Couldn't download the main model...")
+    save_dest = Path('model')
+    save_dest.mkdir(exist_ok=True)
+    dwn_url = f"https://drive.google.com/uc?id={file_id}"
+
+    model_weights_path = Path("model/model.joblib")
+    if not model_weights_path.exists():
+        with st.spinner("Downloading model... this may take awhile! \n"):
+            gdown.download(dwn_url, model_weights_path.as_posix())
+
+    model = load(model_weights_path)
+    return model
 
 
 @st.cache(allow_output_mutation=True)
 def _load_forecast_model(
     file_id="1yPK9wAUgfkYm_FpDASOmqW2oac8Dk_d5"
 ):
-    bytes_obj = download_large_file_from_google_drive(file_id)
-    if bytes_obj:
-        return load(bytes_obj)
-    raise ValueError("Couldn't download the forecast model...")
+    save_dest = Path('model')
+    save_dest.mkdir(exist_ok=True)
+    dwn_url = f"https://drive.google.com/uc?id={file_id}"
+
+    model_weights_path = Path("model/model_forecast.joblib")
+    if not model_weights_path.exists():
+        with st.spinner("Downloading forecast model... this may take awhile! \n"):
+            gdown.download(dwn_url, model_weights_path.as_posix())
+
+    model = load(model_weights_path)
+    return model
 
 
 @st.cache
