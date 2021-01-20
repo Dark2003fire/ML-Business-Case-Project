@@ -107,9 +107,9 @@ def _one_hot_encoding(X):
 
 @st.cache(allow_output_mutation=True)
 def _train_model(X_train_encoded, y_train, **model_kwargs):
-    model = RandomForestRegressor(**model_kwargs, n_jobs=-1)
+    model = RandomForestRegressor(**model_kwargs)
     with st.spinner('Training the model...'):
-        model.fit(X_train_encoded, y_train.values.ravel())
+        model.fit(X_train_encoded, y_train["Sales"])
     return model
 
 
@@ -161,7 +161,8 @@ def write():
                 X_test_encoded[column] = np.zeros(X_test_encoded.shape[0])
 
         # load model
-        model = _train_model(X_train_encoded, y_train, n_estimators=15)
+        model = _train_model(X_train_encoded, y_train,
+                             n_estimators=15, n_jobs=-1)
         st.success('Model trained successfully!')
 
         store_choices, test, y_test = _get_model_predictions(
