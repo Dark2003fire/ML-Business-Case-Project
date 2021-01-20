@@ -52,7 +52,7 @@ def _get_forecast_of_shops(ID_shops, y_train, y_test, forecasts):
         data.rename(columns={"Pred": "Forecast of Sales"}, inplace=True,)
         data_plot = data.melt(
             id_vars=["Date"],
-            value_vars=["Forecast of Sales", "Past Sales"]
+            value_vars=["Past Sales", "Forecast of Sales"]
         )
 
         sales_chart = _make_line_chart(
@@ -197,14 +197,14 @@ def write():
         y_train = y_train.reset_index(drop=True)
         y_test = y_test.reset_index(drop=True)
 
-        X_train_encoded = _one_hot_encoding(X_train).copy()
-        X_train_encoded = _label_encoding(X_train_encoded).copy()
-        X_test_encoded = _one_hot_encoding(X_test).copy()
-        X_test_encoded = _label_encoding(X_test_encoded).copy()
+        X_train_encoded = _one_hot_encoding(X_train)
+        X_train_encoded = _label_encoding(X_train_encoded)
+        X_test_encoded = _one_hot_encoding(X_test)
+        X_test_encoded = _label_encoding(X_test_encoded)
         X_test_forecast_encoded = _one_hot_encoding(
-            combined_data_forecast).copy()
+            combined_data_forecast)
         X_test_forecast_encoded = _label_encoding(
-            X_test_forecast_encoded).copy()
+            X_test_forecast_encoded)
         X_test_forecast_encoded.fillna(-1, inplace=True)
         forecasts = X_test_forecast_encoded[['Date', 'Store']]
 
