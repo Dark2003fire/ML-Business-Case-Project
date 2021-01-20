@@ -115,8 +115,6 @@ def _get_model_predictions(
     y_test,
     should_reset_index=True,
     spinner_msg='Forecasting the next 6 weeks...'
-
-
 ):
     with st.spinner(spinner_msg):
         y_pred = model.predict(X_test_encoded)
@@ -226,15 +224,15 @@ def write():
         y_final = pd.concat([y_test, y_train])
 
         # load models
-        model = _train_model(X_train_encoded, y_train["Sales"],
-                             n_estimators=15)
-        st.success('First model trained successfully!')
+        # model = _train_model(X_train_encoded, y_train["Sales"],
+        #                      n_estimators=15)
+        # st.success('First model trained successfully!')
         model_forecast = _train_model(X_final, y_final["Sales"],
-                                      n_estimators=15)
+                                      n_estimators=15, n_jobs=-1)
         st.success('Second Model trained successfully!')
 
         test, y_test = _get_model_predictions(
-            model, X_test_encoded, y_train, y_test, spinner_msg="Evaluating predictions..."
+            model_forecast, X_test_encoded, y_train, y_test, spinner_msg="Evaluating predictions..."
         )
         _, y_test_forecast = _get_model_predictions(
             model_forecast, X_test_forecast_encoded, None, forecasts, False
