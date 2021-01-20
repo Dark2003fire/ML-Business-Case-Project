@@ -60,9 +60,10 @@ def _get_forecast_of_shops(ID_shops, y_train, y_test, forecasts):
             x='Date',
             y='value',
             title=f"Forecast of sales for store n°{ID_shop}",
-            color=alt.Color('variable', legend=alt.Legend(
-                title="Sales value types"
-            )
+            color=alt.Color(
+                'variable',
+                legend=alt.Legend(title="Sales value types"),
+                scale=alt.Scale(scheme='set1')
             )
         )
         charts.append(sales_chart)
@@ -99,9 +100,10 @@ def _evaluate_forecast_of_shops(ID_shops, test, y_test):
             x='Date',
             y='value',
             title=f"Evaluation of the predictions for store n°{ID_shop}",
-            color=alt.Color('variable', legend=alt.Legend(
-                title="Sales value types"
-            )
+            color=alt.Color(
+                'variable',
+                legend=alt.Legend(title="Sales value types"),
+                scale=alt.Scale(scheme='set1')
             )
         )
         charts.append(sales_chart)

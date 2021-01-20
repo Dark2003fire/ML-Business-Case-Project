@@ -192,7 +192,11 @@ def write():
             x='Date',
             y='value',
             title="Time Serie of Customers for the Store n°1 (open)",
-            color=alt.Color('variable', legend=alt.Legend(title="Serie type"))
+            color=alt.Color(
+                'variable', 
+                legend=alt.Legend(title="Serie type"),
+                scale=alt.Scale(scheme='set1')
+            ) 
         )
         st.altair_chart(sales_chart, use_container_width=True)
 
@@ -206,7 +210,7 @@ def write():
             x='DATE',
             y='Sales',
             title="Average Sales by Store Type",
-            color='StoreType'
+            color=alt.Color('StoreType', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(sales_store_chart, use_container_width=True)
 
@@ -215,7 +219,7 @@ def write():
             x='DATE',
             y='Customers',
             title="Average Number of Customers by Store Type",
-            color='StoreType'
+            color=alt.Color('StoreType', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(customers_store_chart, use_container_width=True)
         combined_data2 = _produce_aggregate_freq_store_sales_customer(
@@ -229,7 +233,7 @@ def write():
             x='Date',
             y='Sales',
             title="Weekly Total Sales by Store Type",
-            color='StoreType'
+            color=alt.Color('StoreType', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(weeks_store_sales_chart, use_container_width=True)
 
@@ -238,7 +242,7 @@ def write():
             x='Date',
             y='Customers',
             title="Weekly Total Customers by Store Type",
-            color='StoreType'
+            color=alt.Color('StoreType', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(weeks_store_customers_chart, use_container_width=True)
 
@@ -262,7 +266,7 @@ def write():
             x='Date',
             y='Sales',
             title=f"Total Sales by store type, aggregated {granularity_option}",
-            color='StoreType'
+            color=alt.Color('StoreType', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(months_store_sales_chart, use_container_width=True)
         months_store_sales_chart = _make_line_chart(
@@ -270,7 +274,7 @@ def write():
             x='Date',
             y='Customers',
             title=f"Total Customer by store type, aggregated {granularity_option}",
-            color='StoreType'
+            color=alt.Color('StoreType', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(months_store_sales_chart, use_container_width=True)
 
@@ -285,7 +289,7 @@ def write():
             x='DATE',
             y='Sales',
             title="Average Sales by Store Assortment",
-            color='Assortment'
+            color=alt.Color('Assortment', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(sales_assortment_chart, use_container_width=True)
 
@@ -294,7 +298,7 @@ def write():
             x='DATE',
             y='Customers',
             title="Average Customers by Store Assortment",
-            color='Assortment'
+            color=alt.Color('Assortment', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(customers_assortment_chart, use_container_width=True)
 
@@ -320,7 +324,7 @@ def write():
             x='DayOfWeek',
             y='Total Sales',
             title=f"Stores Open by Day of Week & Store Type for {holiday_option}",
-            color='StoreType'
+            color=alt.Color('StoreType', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(combined_data_holidays_chart,
                         use_container_width=True
@@ -336,7 +340,7 @@ def write():
             x='DayOfWeek',
             y='Total Sales',
             title=f"Total Sales per day of week and assortment for {holiday_option}",
-            color='Assortment'
+            color=alt.Color('Assortment', scale=alt.Scale(scheme='set1')),
         )
         st.altair_chart(grouped_df_6_chart, use_container_width=True)
 
@@ -372,7 +376,7 @@ def write():
             scatter_df_reduced,
             x='Customers',
             y='Sales',
-            color='StoreType',
+            color=alt.Color('StoreType', scale=alt.Scale(scheme='set1')),
             title='Scatterplot of customers by sales for store colored by types'
         )
         st.altair_chart(scatter_df_chart, use_container_width=True)
@@ -380,7 +384,7 @@ def write():
             scatter_df_reduced,
             x='Customers',
             y='Sales',
-            color='Promo:N',
+            color=alt.Color('Promo:N', scale=alt.Scale(scheme='set1')),
             title='Scatterplot of customers by sales for store colored by promo'
         )
         st.altair_chart(scatter_df_chart_promo, use_container_width=True)
@@ -391,7 +395,7 @@ def write():
             final_promo,
             x='Date',
             y='Avg Sales',
-            color='promo_type',
+            color=alt.Color('promo_type', scale=alt.Scale(scheme='set1')),
             title="Impact of promos on Sales Performance",
         )
         st.altair_chart(promo1_chart, use_container_width=True)
