@@ -8,6 +8,7 @@ import requests
 from io import StringIO, BytesIO
 from joblib import load
 import base64
+from src.download import download_large_file_from_google_drive
 
 
 def _make_line_chart(df, x="", y="", title="", height=400, **encode_args):
@@ -185,7 +186,7 @@ def _load_variables(
     return requests.get(dwn_url).text
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache
 def _load_bytes(dwn_url):
     response = requests.get(dwn_url)
     content = response.content
@@ -199,16 +200,24 @@ def _load_image(
     return _load_bytes(dwn_url)
 
 
+@st.cache(allow_output_mutation=True)
 def _load_model(
-    dwn_url="https://download939.mediafire.com/4frvezmdfoag/pos5bl0quodgww9/finalized_model_compressed"
+    file_id="1PyqEsxgEyyLcBOzMd7UhPpFKudRGT2A-"
 ):
-    return load(_load_bytes(dwn_url))
+    bytes_obj = download_large_file_from_google_drive(file_id)
+    if bytes_obj:
+        return load(bytes_obj)
+    raise ValueError("Couldn't download the main model...")
 
 
+@st.cache(allow_output_mutation=True)
 def _load_forecast_model(
-    dwn_url="https://download1481.mediafire.com/jl167ywc1kpg/qj9j7lk7uncxuch/finalized_model_compressed_2"
+    file_id="1yPK9wAUgfkYm_FpDASOmqW2oac8Dk_d5"
 ):
-    return load(_load_bytes(dwn_url))
+    bytes_obj = download_large_file_from_google_drive(file_id)
+    if bytes_obj:
+        return load(bytes_obj)
+    raise ValueError("Couldn't download the forecast model...")
 
 
 @st.cache
