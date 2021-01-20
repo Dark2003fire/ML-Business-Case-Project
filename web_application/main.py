@@ -4,7 +4,7 @@ import streamlit as st
 import altair as alt
 import src.pages.data_analysis
 import src.pages.modeling
-from src.utils import _override_color_styles, _streamlit_theme
+from src.utils import _override_color_styles, _streamlit_theme, _load_image
 
 PAGES = {
     "Statistical Analysis on Sales": src.pages.data_analysis,
@@ -22,8 +22,7 @@ def init():
 def main():
     """Main function of the App"""
     init()
-    st.sidebar.image('./assets/logo_wavestone.png',
-                     use_column_width=True)
+    st.sidebar.image(_load_image(), use_column_width=True)
     st.sidebar.title("Navigation Panel")
     selection = st.sidebar.radio("Go to", list(PAGES.keys()))
 

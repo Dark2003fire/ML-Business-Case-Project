@@ -185,22 +185,33 @@ def _load_variables(
     return requests.get(dwn_url).text
 
 
+@st.cache
+def _load_bytes(dwn_url):
+    response = requests.get(dwn_url)
+    content = response.content
+    return BytesIO(content)
+
+
+@st.cache
+def _load_image(
+    file_id="1_YJ_9jrJnCKvmawe-gVGuhZ9BaMgCYkt"
+):
+    dwn_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    return _load_bytes(dwn_url)
+
+
 @st.cache(allow_output_mutation=True)
 def _load_model(
     dwn_url="https://download939.mediafire.com/4frvezmdfoag/pos5bl0quodgww9/finalized_model_compressed"
 ):
-    response = requests.get(dwn_url)
-    content = response.content
-    return load(BytesIO(content))
+    return load(_load_bytes(dwn_url))
 
 
 @st.cache
 def _load_forecast_model(
     dwn_url="https://download1481.mediafire.com/jl167ywc1kpg/qj9j7lk7uncxuch/finalized_model_compressed_2"
 ):
-    response = requests.get(dwn_url)
-    content = response.content
-    return load(BytesIO(content))
+    return load(_load_bytes(dwn_url))
 
 
 @st.cache
