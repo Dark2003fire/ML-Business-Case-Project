@@ -202,9 +202,9 @@ def write():
         X_test_encoded = _one_hot_encoding(X_test)
         X_test_encoded = _label_encoding(X_test_encoded)
         X_test_forecast_encoded = _one_hot_encoding(
-            combined_data_forecast)
+            combined_data_forecast).copy()
         X_test_forecast_encoded = _label_encoding(
-            X_test_forecast_encoded)
+            X_test_forecast_encoded).copy()
         X_test_forecast_encoded.fillna(-1, inplace=True)
         forecasts = X_test_forecast_encoded[['Date', 'Store']]
 
