@@ -2,12 +2,12 @@
 import streamlit as st
 
 import altair as alt
-# import src.pages.data_analysis
+import src.pages.data_analysis
 import src.pages.modeling
 from src.utils import _override_color_styles, _streamlit_theme, _load_image
 
 PAGES = {
-    # "Statistical Analysis on Sales": src.pages.data_analysis,
+    "Statistical Analysis on Sales": src.pages.data_analysis,
     "Sales Forecast and Insights": src.pages.modeling,
 }
 

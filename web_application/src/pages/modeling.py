@@ -129,8 +129,8 @@ def write():
         model_data = combined_data.drop(columns=['PromoInterval', 'Customers'])
 
         # X, y separation
-        y = model_data[['Date', 'Store', 'Sales']].copy()
-        X = model_data.drop(columns='Sales').copy()
+        y = model_data[['Date', 'Store', 'Sales']]
+        X = model_data.drop(columns='Sales')
         X['Date'] = pd.to_datetime(X['Date'])
         y['Date'] = pd.to_datetime(y['Date'])
         # Date is at position 2
@@ -146,10 +146,10 @@ def write():
         y_train = y_train.reset_index(drop=True)
         y_test = y_test.reset_index(drop=True)
 
-        X_train_encoded = _one_hot_encoding(X_train).copy()
-        X_train_encoded = _label_encoding(X_train_encoded).copy()
-        X_test_encoded = _one_hot_encoding(X_test).copy()
-        X_test_encoded = _label_encoding(X_test_encoded).copy()
+        X_train_encoded = _one_hot_encoding(X_train)
+        X_train_encoded = _label_encoding(X_train_encoded)
+        X_test_encoded = _one_hot_encoding(X_test)
+        X_test_encoded = _label_encoding(X_test_encoded)
         X_train_encoded.set_index(['Date'], inplace=True)
         X_test_encoded.set_index(['Date'], inplace=True)
         y_train.set_index(['Date'], inplace=True)
