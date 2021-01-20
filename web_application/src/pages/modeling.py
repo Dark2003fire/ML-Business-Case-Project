@@ -160,7 +160,7 @@ def _train_model(X_train_encoded, y_train, **model_kwargs):
     return model
 
 
-@ st.cache
+@st.cache
 def _get_permutation_importance(model, X_test_encoded, y_test):
     return permutation_importance(model, X_test_encoded, y_test)
 
@@ -197,14 +197,14 @@ def write():
         y_train = y_train.reset_index(drop=True)
         y_test = y_test.reset_index(drop=True)
 
-        X_train_encoded = _one_hot_encoding(X_train)
-        X_train_encoded = _label_encoding(X_train_encoded)
-        X_test_encoded = _one_hot_encoding(X_test)
-        X_test_encoded = _label_encoding(X_test_encoded)
+        X_train_encoded = _one_hot_encoding(X_train).copy()
+        X_train_encoded = _label_encoding(X_train_encoded).copy()
+        X_test_encoded = _one_hot_encoding(X_test).copy()
+        X_test_encoded = _label_encoding(X_test_encoded).copy()
         X_test_forecast_encoded = _one_hot_encoding(
-            combined_data_forecast)
+            combined_data_forecast).copy()
         X_test_forecast_encoded = _label_encoding(
-            X_test_forecast_encoded)
+            X_test_forecast_encoded).copy()
         X_test_forecast_encoded.fillna(-1, inplace=True)
         forecasts = X_test_forecast_encoded[['Date', 'Store']]
 
