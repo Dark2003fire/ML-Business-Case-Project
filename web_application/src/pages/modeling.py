@@ -134,7 +134,6 @@ def _get_model_predictions(
     return None, y_test
 
 
-@st.cache(allow_output_mutation=True)
 def _label_encoding(X):
     encoder = LabelEncoder()
     X['Assortment'] = encoder.fit_transform(X['Assortment'])
@@ -198,13 +197,13 @@ def write():
         y_test = y_test.reset_index(drop=True)
 
         X_train_encoded = _one_hot_encoding(X_train).copy()
-        X_train_encoded = _label_encoding(X_train_encoded).copy()
+        X_train_encoded = _label_encoding(X_train_encoded)
         X_test_encoded = _one_hot_encoding(X_test).copy()
-        X_test_encoded = _label_encoding(X_test_encoded).copy()
+        X_test_encoded = _label_encoding(X_test_encoded)
         X_test_forecast_encoded = _one_hot_encoding(
             combined_data_forecast).copy()
         X_test_forecast_encoded = _label_encoding(
-            X_test_forecast_encoded).copy()
+            X_test_forecast_encoded)
         X_test_forecast_encoded.fillna(-1, inplace=True)
         forecasts = X_test_forecast_encoded[['Date', 'Store']]
 
@@ -248,10 +247,10 @@ def write():
         )
         test_action = st.button('Forecast the next 6 weeks')
         if test_action:
-            # charts = _evaluate_forecast_of_shops(store_choices, test, y_test)
-            charts_forecast, dfs_forecast = _get_forecast_of_shops(
-                store_choices, y_train, y_test, y_test_forecast
-            )
+            charts = _evaluate_forecast_of_shops(store_choices, test, y_test)
+            # charts_forecast, dfs_forecast = _get_forecast_of_shops(
+            #     store_choices, y_train, y_test, y_test_forecast
+            # )
             for (chart, chart_forecast), (id_shop, df) in zip(
                 zip(charts, charts_forecast), dfs_forecast
             ):
