@@ -229,7 +229,7 @@ def write():
         # st.success('First model trained successfully!')
         model_forecast = _train_model(X_final, y_final["Sales"],
                                       n_estimators=15, n_jobs=-1)
-        st.success('Second Model trained successfully!')
+        st.success('Model trained successfully!')
 
         test, y_test = _get_model_predictions(
             model_forecast, X_test_encoded, y_train, y_test, spinner_msg="Evaluating predictions..."
