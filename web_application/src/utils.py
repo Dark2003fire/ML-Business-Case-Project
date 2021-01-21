@@ -150,7 +150,7 @@ def _get_table_download_link(df, store_id):
     csv = df.to_csv(index=False)
     # some strings <-> bytes conversions necessary here
     b64 = base64.b64encode(csv.encode()).decode()
-    return f'<a href="data:file/csv;base64,{b64}">Download sales forecast of store {store_id} as CSV...</a>'
+    return f'<a download="forecast_store_{store_id}.csv" href="data:file/csv;base64,{b64}">Download sales forecast of store {store_id} as CSV...</a>'
 
 
 @st.cache

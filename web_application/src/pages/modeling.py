@@ -239,7 +239,7 @@ def write():
         _, y_test_forecast = _get_model_predictions(
             model_forecast, X_test_forecast_encoded, None, forecasts, False
         )
-        stores = np.unique(test["Store"])
+        stores = np.unique(forecasts["Store"])
         store_choices = st.multiselect(
             "Select your stores for the 6-weeks forecast",
             list(stores),

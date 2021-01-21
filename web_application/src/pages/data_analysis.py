@@ -191,12 +191,12 @@ def write():
             group_df_plot,
             x='Date',
             y='value',
-            title="Time Serie of Customers for the Store n°1 (open)",
+            title="Normalized Customers and Sales for all stores (open)",
             color=alt.Color(
-                'variable', 
+                'variable',
                 legend=alt.Legend(title="Serie type"),
                 scale=alt.Scale(scheme='set1')
-            ) 
+            )
         )
         st.altair_chart(sales_chart, use_container_width=True)
 
@@ -389,7 +389,6 @@ def write():
         )
         st.altair_chart(scatter_df_chart_promo, use_container_width=True)
 
-        st.write("# Classical plots")
         final_promo = _produce_promo_sales(combined_data, 'Sales')
         promo1_chart = _make_line_chart(
             final_promo,
