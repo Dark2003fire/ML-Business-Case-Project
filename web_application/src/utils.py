@@ -2,6 +2,13 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import altair as alt
 import pandas as pd
+from pathlib import Path
+import pandas as pd
+import requests
+from io import StringIO, BytesIO
+from joblib import load
+import base64
+from src.download import download_large_file_from_google_drive
 import gdown
 
 
@@ -27,32 +34,6 @@ def _make_bar_chart(df, x="", y="", title="", height=400, **encode_args):
         .properties(height=height)\
         .interactive()
     return chart
-
-
-def _set_graphical_settings():
-    # Graphical settings
-    CB91_Blue = '#2CBDFE'
-    CB91_Green = '#47DBCD'
-    CB91_Pink = '#F3A0F2'
-    CB91_Purple = '#9D2EC5'
-    CB91_Violet = '#661D98'
-    CB91_Amber = '#F5B14C'
-    color_list = [CB91_Blue, CB91_Pink, CB91_Amber, CB91_Purple, CB91_Green,
-                  CB91_Violet]
-    params = {"ytick.color": "black",
-              "xtick.color": "black",
-              'axes.labelsize': 15,
-              "axes.labelcolor": "black",
-              "axes.edgecolor": "black",
-              "axes.titlecolor": "black",
-              'figure.figsize': [20, 8],
-              'axes.prop_cycle': plt.cycler(color=color_list),
-              'figure.dpi': 75,
-              'legend.fontsize': 10,
-              'font.size': 15
-              }
-    plt.rcParams.update(params)
-    return color_list
 
 
 def _streamlit_theme():
@@ -164,43 +145,110 @@ def _streamlit_theme():
     return config
 
 
-DATA_PATH = "data/"
+def _get_table_download_link(df, store_id):
+    """Generates a link allowing the data in a given panda dataframe to be downloaded"""
+    csv = df.to_csv(index=False)
+    # some strings <-> bytes conversions necessary here
+    b64 = base64.b64encode(csv.encode()).decode()
+    return f'<a download="forecast_store_{store_id}.csv" href="data:file/csv;base64,{b64}">Download sales forecast of store {store_id} as CSV...</a>'
 
 
 @st.cache
 def _load_variables(
-    url="https://drive.google.com/uc?id=10p7JyO2DNkWbMRZoMNVPmipy1msZpBEV"
+    file_id="10p7JyO2DNkWbMRZoMNVPmipy1msZpBEV"
 ):
-    path = DATA_PATH + "variables.txt"
-    gdown.download(url, path)
-    return open(path, "r").read()
+    dwn_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    return requests.get(dwn_url).text
 
 
 @st.cache
+def _load_bytes(dwn_url):
+    response = requests.get(dwn_url)
+    content = response.content
+    return BytesIO(content)
+
+
+def _load_image(
+    file_id="1_YJ_9jrJnCKvmawe-gVGuhZ9BaMgCYkt"
+):
+    dwn_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    return _load_bytes(dwn_url)
+
+
+@st.cache(allow_output_mutation=True)
+def _load_model(
+    file_id="1PyqEsxgEyyLcBOzMd7UhPpFKudRGT2A-"
+):
+    save_dest = Path('model')
+    save_dest.mkdir(exist_ok=True)
+    dwn_url = f"https://drive.google.com/uc?id={file_id}"
+
+    model_weights_path = Path("model/model.joblib")
+    if not model_weights_path.exists():
+        with st.spinner("Downloading model... this may take awhile! \n"):
+            gdown.download(dwn_url, model_weights_path.as_posix())
+
+    model = load(model_weights_path)
+    return model
+
+
+@st.cache(allow_output_mutation=True)
+def _load_forecast_model(
+    file_id="1yPK9wAUgfkYm_FpDASOmqW2oac8Dk_d5"
+):
+    save_dest = Path('model')
+    save_dest.mkdir(exist_ok=True)
+    dwn_url = f"https://drive.google.com/uc?id={file_id}"
+
+    model_weights_path = Path("model/model_forecast.joblib")
+    if not model_weights_path.exists():
+        with st.spinner("Downloading forecast model... this may take awhile! \n"):
+            gdown.download(dwn_url, model_weights_path.as_posix())
+
+    model = load(model_weights_path)
+    return model
+
+
+@st.cache
+def _load_dataframe(file_id, **read_kwargs):
+    dwn_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    text = requests.get(dwn_url).text
+    csv_raw = StringIO(text)
+    return pd.read_csv(csv_raw, **read_kwargs)
+
+
+def _load_train_data_analysis(
+    file_id="1kx5sSTcRj4aVS8KZgSCcdo9-5i1axh5n",
+    **read_kwargs,
+):
+    return _load_dataframe(file_id, **read_kwargs)
+
+
+def _load_test_data_analysis(
+    file_id="17ur-ILBNAZDgjpqgPU1XBLYSIXc5cn5d",
+    **read_kwargs,
+):
+    return _load_dataframe(file_id, **read_kwargs)
+
+
 def _load_train_data(
-    url="https://drive.google.com/uc?id=1kx5sSTcRj4aVS8KZgSCcdo9-5i1axh5n"
+    file_id="1IBTlAoYKpX64r8sVDNs9yfF3FGWFxu2k",
+    **read_kwargs,
 ):
-    path = DATA_PATH + "train.csv"
-    gdown.download(url, path)
-    return pd.read_csv(path, low_memory=False)
+    return _load_dataframe(file_id, **read_kwargs)
 
 
-@st.cache
 def _load_test_data(
-    url="https://drive.google.com/uc?id=17ur-ILBNAZDgjpqgPU1XBLYSIXc5cn5d"
+    file_id="1b05eSnGQxrfFLywxBF37z00H1PIWOIMU",
+    **read_kwargs,
 ):
-    path = DATA_PATH + "test.csv"
-    gdown.download(url, path)
-    return pd.read_csv(path)
+    return _load_dataframe(file_id, **read_kwargs)
 
 
-@st.cache
 def _load_store_data(
-    url="https://drive.google.com/uc?id=1IHr_vKHZ0P0lUIAksJ9joRLUoUtZdDSY"
+    file_id="1IHr_vKHZ0P0lUIAksJ9joRLUoUtZdDSY",
 ):
-    path = DATA_PATH + "store.csv"
-    gdown.download(url, path)
-    return pd.read_csv(path)
+    return _load_dataframe(file_id)
 
 
 def _display_dataframe_quickly(df, min_rows=5, max_rows=1000, **st_dataframe_kwargs):
